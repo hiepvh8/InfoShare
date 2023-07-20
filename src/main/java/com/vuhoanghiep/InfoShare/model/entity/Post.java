@@ -20,10 +20,10 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private String content;
+    private String title; // Tiêu đề bài viết
+    private String content; // Nội dung bài viết
     @Column(name = "createtime")
-    private LocalDateTime createTime;
+    private LocalDateTime createTime; // Thời gian tạo bài viết
 
     @ManyToOne
     @JoinColumn(name = "userid", referencedColumnName = "id")
@@ -34,8 +34,15 @@ public class Post {
     private Category category;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "post-tag", joinColumns = @JoinColumn(name = "postid"),
-            inverseJoinColumns = @JoinColumn(name = "cartid"))
+    @JoinTable(
+            name = "post_tag",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
     @JsonBackReference
-    List<Tag> tags;
+    private List<Tag> tags;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @JsonBackReference
+    List<Image> images;
 }
